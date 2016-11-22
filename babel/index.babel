@@ -1,15 +1,3 @@
-/*
-I've always liked Medium's approach to highlighting text in articles and making notes, but I never quite knew how it works, so I experimented a bit in my spare time.
-This implementation is not production ready, it has only been tested on latest FF (some noticable bugs) and Chrome (seems to work best in chrome).
-
-As said, this was just an exploration into trying to remake Medium's solution and explore the options.
-
-I hope you like it, fork it and hopefully some day use it in production ;)
-
-btw, I picked up the design inspiration from 
-https://uimovement.com/ui/304/text-editor-animation/
-*/
-
 const defaultOptions = {
   mods: ['hash', 'italic', 'bold', 'color']
 };
