@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css?family=Abhaya+Libre');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:700');
+
+* {
+  box-sizing: border-box;
+}
+
+// highlighter css
+.hgspan {
+  cursor: pointer;
+  background: linear-gradient(to bottom, rgba(173, 255, 207, 1), rgba(173, 255, 207, 1));
+}
+
+.hg-wrp {
+  position: absolute;
+  width: 135px;
+  height: 40px;
+  background-color: #fff;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, .2);
+  border-radius: 25px;
+  transform-origin: center bottom;
+  overflow: hidden;
+  z-index: 1;
+  opacity: 0;
+  margin-bottom: 1em;
+  // initial state!
+  transition: opacity 130ms linear, transform 130ms linear;
+  transform: translateY(30px) scaleX(.12) scaleY(.3);
+  will-change: transform;
+  // Open state
+  &--open {
+    opacity: 1;
+    transition: opacity 320ms 60ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 550ms cubic-bezier(0.23, 1, 0.32, 1);
+    transform: translate(0, 15px) scaleX(1) scaleY(1);
+  }
+
+  svg {
+    max-height: 20px;
+    width: 100%;
+  }
+
+  .hg-options {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .hg-option {
+      -webkit-appearance: none;
+      border: none;
+      background-color: #fff;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      &:focus {
+        outline: none;
+      }
+    }
+    .hg__option {
+      max-width: 25%;
+      &.hg-option--hash {
+        input {
+          position: absolute;
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          padding: 8px 34px 8px 24px;
+          border: none;
+          left: 0;
+          top: 0;
+          background: transparent;
+          font-size: 1.1rem;
+          visibility: hidden;
+          opacity: 0;
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+      &--color {
+        .hg-option--open {
+          z-index: 2;
+          position: relative;
+          cursor: pointer;
+          background-color: transparent;
+        }
+        .hg-option--close {
+          padding: 0;
+          z-index: 2;
+          color: white;
+          background-color: #309eeb;
+          position: absolute;
+          border-radius: 100%;
+          left: 6px;
+          top: 50%;
+          transform: translate(0, -50%) scale(.3);
+          width: 32px;
+          height: 32px;
+          line-height: 16px;
+          border: none;
+          -webkit-appearance: none;
+          cursor: pointer;
+          &:focus {
+            outline: none;
+          }
+        }
+        input {
+          position: absolute;
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          padding: 8px 34px 8px 34px;
+          border: none;
+          left: 0;
+          top: 0;
+          background: transparent;
+          font-size: 1.1rem;
+          visibility: hidden;
+          opacity: 0;
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+
+  // if Open!
+  @keyframes showBlueOk {
+    0% {
+      transform: translate(0, -50%) scale(.3);
+    }
+    100% {
+      transform: translate(92px, -50%) scale(1);
+    }
+  }
+  @keyframes hideBlueOk {
+    0% {
+      transform: translate(92px, -50%) scale(1);
+    }
+    20% {
+      transform: translate(92px, -50%) scale(1.15);
+    }
+    40% {
+      opacity: 1;
+      transform: translate(92px, -50%) scale(.95);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(0px, -50%) scale(.3);
+    }
+  }
+  /**
+  **  OPEN COLOR MOD
+  **/
+  &--open.hg-option--color {
+    $d: 70ms;
+    $trans: 170ms;
+    $ease: linear;
+    .hg-options {
+      .hg-option--close {
+        animation: showBlueOk 320ms 70ms cubic-bezier(.55, 0, .1, 1) forwards;
+      }
+      input {
+        transition: all 170ms $d * 1.88 linear;
+        z-index: 1;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+    .hg__option:nth-child(2) {
+      opacity: 0;
+      transition: opacity $trans $ease;
+    }
+    .hg__option:nth-child(3) {
+      opacity: 0;
+      transition: opacity $trans $d * 1.44 $ease;
+    }
+    .hg__option:nth-child(4) {
+      opacity: 0;
+      transition: opacity $trans $d * 1.88 $ease;
+    }
+  }
+  /**
+  **  CLOSE COLOR MOD
+  **/
+  &--open.hg-wrp--closefromcolor {
+    $transout: 200ms;
+    $ease: linear;
+    $tt: 155ms;
+    $d: 80ms;
+    .hg-options {
+      input {
+        transition: all 170ms linear;
+        opacity: 0;
+        visibility: hidden;
+      }
+      .hg-option--close {
+        animation: hideBlueOk 350ms cubic-bezier(.55, 0, .1, 1) forwards;
+      }
+    }
+    .hg__option:nth-child(2) {
+      opacity: 1;
+      transition: opacity $transout $tt + $d * 3 $ease;
+    }
+    .hg__option:nth-child(3) {
+      opacity: 1;
+      transition: opacity $transout $tt + $d * 2 $ease;
+    }
+    .hg__option:nth-child(4) {
+      opacity: 1;
+      transition: opacity $transout $tt + $d * 1 $ease;
+    }
+  }
+  /**
+  **  SHOW HASH MOD
+  **/
+  &--open.hg-option--hash {
+    $d: 70ms;
+    $trans: 170ms;
+    $ease: linear;
+    .hg-options {
+      .hg__option.hg-option--hash {
+        input {
+          z-index: 1;
+          opacity: 1;
+          transition: all 170ms $d * 1.88 linear;
+          visibility: visible;
+        }
+      }
+    }
+    .hg__option:nth-child(3) {
+      opacity: 0;
+      transition: opacity $trans $ease;
+    }
+    .hg__option:nth-child(2) {
+      opacity: 0;
+      transition: opacity $trans $d * 1.44 $ease;
+    }
+    .hg__option:nth-child(1) {
+      opacity: 0;
+      transition: opacity $trans $d * 1.88 $ease;
+    }
+  }
+  /**
+  **  CLOSE HASH MOD
+  **/
+  &--open.hg-wrp--closefromhash {
+    $d: 70ms;
+    $trans: 170ms;
+    $ease: linear;
+    .hg-options {
+      .hg__option.hg-option--hash {
+        input {
+          opacity: 1;
+          transition: all 170ms linear;
+          visibility: hidden;
+        }
+      }
+    }
+    .hg__option:nth-child(1) {
+      opacity: 1;
+      transition: opacity $trans * 1.44 $ease;
+    }
+    .hg__option:nth-child(2) {
+      opacity: 1;
+      transition: opacity $trans $d * 1.88 $ease;
+    }
+    .hg__option:nth-child(3) {
+      opacity: 1;
+      transition: opacity $trans $d * 2.32 $ease;
+    }
+  }
+}
+
+
+// end highlighter css
+
+
+html {
+  font-size: 62.5%;
+  font-family: 'Abhaya Libre', serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-image: url(https://cdn-images-1.medium.com/max/2000/1*Hu3vQJOIihS2IKbyjgnhFg.png);
+  background-size: cover;
+  background-position: center;
+  padding: 120px 20px;
+  position: relative;
+  &:before {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: "";
+    background-color: rgba(0, 0, 0, .6);
+  }
+  h1 {
+    position: relative;
+    margin: 0;
+    text-align: center;
+    font-size: 6rem;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-family: 'Roboto Condensed', sans-serif
+  }
+}
+
+.content {
+  max-width: 700px;
+  margin: 0 auto;
+  p {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.1rem;
+    line-height: 1.58;
+    letter-spacing: -.003em;
+    color: rgba(0, 0, 0, .8);
+    margin-top:50px;
+    .dropcap {
+      position: relative;
+      float: left;
+      font-weight: 700;
+      font-style: normal;
+      font-size: 7.2rem;
+      padding-top: 7px;
+      margin-left: -5px;
+      margin-right: 10px;
+      letter-spacing: -.03em;
+      line-height: .83;
+      margin-bottom: -.08em;
+    }
+    //&::selection{
+    //  background-color: rgba(0,0,0,.8);
+    //  color:white;
+    //}
+  }
+}
